@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming Tournament Portal</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #111827;
+            padding: 15px 6%;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #38bdf8;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .nav-links button:hover {
+            color: #38bdf8;
+        }
+
+        /* COMMON */
+        .page {
+            display: none;
+            min-height: 90vh;
+            padding: 40px 6%;
+        }
+
+        .active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        .danger {
+            background: #dc2626;
+        }
+
+        .success {
+            background: #16a34a;
+        }
+
+        .warning {
+            background: #f59e0b;
+        }
+
+        /* HOME */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #111827, #1e3a8a);
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 55px;
+            color: #38bdf8;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        /* CARDS */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .card p {
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* FORMS */
+        .form-box {
+            max-width: 500px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        /* DASHBOARD */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .stat {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .stat h2 {
+            color: #2563eb;
+            font-size: 32px;
+        }
+
+        /* TABLE */
+        .table-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 13px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #111827;
+            color: white;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* MESSAGE */
+        #message {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: #16a34a;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            display: none;
+            z-index: 2000;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .cards,
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- MESSAGE -->
+<div id="message"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo">🎮 Gaming Tournament Portal</div>
+
+    <div class="nav-links">
+        <button onclick="showPage('home')">Home</button>
+        <button onclick="showPage('tournaments')">Tournaments</button>
+        <button onclick="showPage('leaderboard')">Leaderboard</button>
+        <button onclick="showPage('login')">Login</button>
+        <button onclick="showPage('signup')">Signup</button>
+        <button id="logoutBtn" onclick="logout()" style="display:none;">Logout</button>
+    </div>
+</nav>
+
+
+<!-- ================= HOME ================= -->
+
+<section id="home" class="page active">
+
+    <div class="hero">
+        <div class="hero-content">
+
+            <h1>🎮 Gaming Tournament Portal</h1>
+
+            <p>
+                Join online gaming tournaments, create teams,
+                compete with players and track your rankings.
+            </p>
+
+            <button class="btn" onclick="showPage('tournaments')">
+                Explore Tournaments
+            </button>
+
+            <button class="btn success" onclick="showPage('signup')">
+                Join Now
+            </button>
+
+        </div>
+    </div>
+
+    <div class="container">
+
+        <h2 style="margin-top:40px;">Our Features</h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>🏆 Tournament Registration</h3>
+                <p>Register for online gaming tournaments easily.</p>
+            </div>
+
+            <div class="card">
+                <h3>👥 Team Management</h3>
+                <p>Create teams and manage team members.</p>
+            </div>
+
+            <div class="card">
+                <h3>🎮 Match Scheduling</h3>
+                <p>View upcoming matches and match status.</p>
+            </div>
+
+            <div class="card">
+                <h3>📊 Leaderboard</h3>
+                <p>Track team rankings and tournament points.</p>
+            </div>
+
+            <div class="card">
+                <h3>📢 Live Updates</h3>
+                <p>View tournament results and updates.</p>
+            </div>
+
+            <div class="card">
+                <h3>🎁 Prize Management</h3>
+                <p>Track winners and tournament prizes.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= SIGNUP ================= -->
+
+<section id="signup" class="page">
+
+    <div class="form-box">
+
+        <h2>📝 User Registration</h2>
+
+        <form onsubmit="signup(event)">
+
+            <label>Full Name</label>
+            <input type="text" id="signupName"
+                   placeholder="Example: Sai Teja" required>
+
+            <label>Email</label>
+            <input type="email" id="signupEmail"
+                   placeholder="saiteja@gmail.com" required>
+
+            <label>Mobile Number</label>
+            <input type="tel" id="signupMobile"
+                   placeholder="9876543210" required>
+
+            <label>Username</label>
+            <input type="text" id="signupUsername"
+                   placeholder="saiteja123" required>
+
+            <label>Password</label>
+            <input type="password" id="signupPassword"
+                   placeholder="Enter password" required>
+
+            <label>Confirm Password</label>
+            <input type="password" id="signupConfirm"
+                   placeholder="Confirm password" required>
+
+            <button class="btn" type="submit">
+                Create Account
+            </button>
+
+        </form>
+
+        <p style="margin-top:15px;">
+            Already registered?
+            <button class="btn" onclick="showPage('login')">
+                Login
+            </button>
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= LOGIN ================= -->
+
+<section id="login" class="page">
+
+    <div class="form-box">
+
+        <h2>🔐 Login</h2>
+
+        <form onsubmit="login(event)">
+
+            <label>Username</label>
+            <input type="text" id="loginUsername"
+                   placeholder="Enter username" required>
+
+            <label>Password</label>
+            <input type="password" id="loginPassword"
+                   placeholder="Enter password" required>
+
+            <button class="btn" type="submit">
+                Login
+            </button>
+
+        </form>
+
+        <p style="margin-top:20px;">
+            <b>Demo Admin:</b> admin / admin123
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= USER DASHBOARD ================= -->
+
+<section id="user" class="page">
+
+    <div class="container">
+
+        <h1>👤 User Dashboard</h1>
+
+        <p id="welcomeUser"></p>
+
+        <div class="dashboard-grid">
+
+            <div class="stat">
+                <h2 id="userTournamentCount">0</h2>
+                <p>Tournaments</p>
+            </div>
+
+            <div class="stat">
+                <h2 id="userTeamCount">0</h2>
+                <p>My Teams</p>
+            </div>
+
+            <div class="stat">
+                <h2>3</h2>
+                <p>Upcoming Matches</p>
+            </div>
+
+            <div class="stat">
+                <h2>1</h2>
+                <p>Current Ranking</p>
+            </div>
+
+        </div>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>🏆 Tournaments</h3>
+                <p>Register for online tournaments.</p>
+                <button class="btn"
+                        onclick="showPage('tournaments')">
+                    View
+                </button>
+            </div>
+
+            <div class="card">
+                <h3>👥 My Teams</h3>
+                <p>Create and manage your team.</p>
+                <button class="btn"
+                        onclick="showPage('teams')">
+                    Manage
+                </button>
+            </div>
+
+            <div class="card">
+                <h3>🎮 Matches</h3>
+                <p>Check upcoming matches.</p>
+                <button class="btn"
+                        onclick="showPage('matches')">
+                    View Matches
+                </button>
+            </div>
+
+            <div class="card">
+                <h3>🏅 Leaderboard</h3>
+                <p>Check tournament rankings.</p>
+                <button class="btn"
+                        onclick="showPage('leaderboard')">
+                    View Ranking
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ADMIN DASHBOARD ================= -->
+
+<section id="admin" class="page">
+
+    <div class="container">
+
+        <h1>⚙️ Admin Dashboard</h1>
+
+        <p>Welcome, Administrator.</p>
+
+        <div class="dashboard-grid">
+
+            <div class="stat">
+                <h2 id="adminUsers">0</h2>
+                <p>Users</p>
+            </div>
+
+            <div class="stat">
+                <h2 id="adminTournaments">0</h2>
+                <p>Tournaments</p>
+            </div>
+
+            <div class="stat">
+                <h2 id="adminTeams">0</h2>
+                <p>Teams</p>
+            </div>
+
+            <div class="stat">
+                <h2 id="adminMatches">0</h2>
+                <p>Matches</p>
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>➕ Add Tournament</h2>
+
+            <input type="text" id="adminTournamentName"
+                   placeholder="Tournament Name">
+
+            <input type="text" id="adminGame"
+                   placeholder="Game Name">
+
+            <input type="date" id="adminDate">
+
+            <button class="btn success"
+                    onclick="addTournament()">
+                Add Tournament
+            </button>
+
+        </div>
+
+
+        <div class="table-box">
+
+            <h2>👥 Registered Users</h2>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Username</th>
+                    </tr>
+                </thead>
+
+                <tbody id="adminUserTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= TOURNAMENTS ================= -->
+
+<section id="tournaments" class="page">
+
+    <div class="container">
+
+        <h1>🏆 Online Tournaments</h1>
+
+        <p>
+            Participate in exciting online gaming tournaments.
+        </p>
+
+        <div id="tournamentCards" class="cards"></div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= TEAMS ================= -->
+
+<section id="teams" class="page">
+
+    <div class="container">
+
+        <h1>👥 Team Management</h1>
+
+        <div class="form-box">
+
+            <h2>Create Team</h2>
+
+            <input type="text" id="teamName"
+                   placeholder="Team Name">
+
+            <select id="teamGame">
+
+                <option value="">Select Game</option>
+                <option>BGMI</option>
+                <option>Valorant</option>
+                <option>Free Fire</option>
+                <option>Call of Duty</option>
+
+            </select>
+
+            <button class="btn success"
+                    onclick="createTeam()">
+                Create Team
+            </button>
+
+        </div>
+
+
+        <h2>My Teams</h2>
+
+        <div id="teamCards" class="cards"></div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= MATCHES ================= -->
+
+<section id="matches" class="page">
+
+    <div class="container">
+
+        <h1>🎮 Match Schedule</h1>
+
+        <div class="table-box">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Game</th>
+                        <th>Team A</th>
+                        <th>Team B</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="matchTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= LEADERBOARD ================= -->
+
+<section id="leaderboard" class="page">
+
+    <div class="container">
+
+        <h1>🏅 Tournament Leaderboard</h1>
+
+        <div class="table-box">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Rank</th>
+                        <th>Team</th>
+                        <th>Captain</th>
+                        <th>Wins</th>
+                        <th>Points</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="leaderboardTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    <p>
+        © 2026 Gaming Tournament Portal |
+        CSE (AI & ML)
+    </p>
+
+</footer>
+
+
+<script>
+
+    /* =====================================
+       INITIAL DATA
+    ===================================== */
+
+    const defaultTournaments = [
+        {
+            id: 1,
+            name: "BGMI Andhra Championship",
+            game: "BGMI",
+            date: "2026-09-25",
+            mode: "Online"
+        },
+        {
+            id: 2,
+            name: "Valorant India Masters",
+            game: "Valorant",
+            date: "2026-09-27",
+            mode: "Online"
+        },
+        {
+            id: 3,
+            name: "Free Fire Telugu Cup",
+            game: "Free Fire",
+            date: "2026-09-29",
+            mode: "Online"
+        }
+    ];
+
+
+    const defaultMatches = [
+        {
+            game: "BGMI",
+            teamA: "Thunder Warriors",
+            teamB: "Telugu Titans",
+            date: "25-09-2026",
+            status: "Upcoming"
+        },
+        {
+            game: "Valorant",
+            teamA: "Cyber Kings",
+            teamB: "Phoenix Squad",
+            date: "27-09-2026",
+            status: "Live"
+        },
+        {
+            game: "Free Fire",
+            teamA: "Andhra Warriors",
+            teamB: "Hyderabad Kings",
+            date: "29-09-2026",
+            status: "Upcoming"
+        }
+    ];
+
+
+    const defaultLeaderboard = [
+        {
+            team: "Thunder Warriors",
+            captain: "Sai Teja",
+            wins: 3,
+            points: 90
+        },
+        {
+            team: "Telugu Titans",
+            captain: "Kiran Reddy",
+            wins: 2,
+            points: 75
+        },
+        {
+            team: "Cyber Kings",
+            captain: "Harsha Vardhan",
+            wins: 1,
+            points: 60
+        },
+        {
+            team: "Phoenix Squad",
+            captain: "Ananya Reddy",
+            wins: 1,
+            points: 50
+        }
+    ];
+
+
+    if (!localStorage.getItem("tournaments")) {
+        localStorage.setItem(
+            "tournaments",
+            JSON.stringify(defaultTournaments)
+        );
+    }
+
+    if (!localStorage.getItem("matches")) {
+        localStorage.setItem(
+            "matches",
+            JSON.stringify(defaultMatches)
+        );
+    }
+
+    if (!localStorage.getItem("leaderboard")) {
+        localStorage.setItem(
+            "leaderboard",
+            JSON.stringify(defaultLeaderboard)
+        );
+    }
+
+    if (!localStorage.getItem("users")) {
+        localStorage.setItem(
+            "users",
+            JSON.stringify([])
+        );
+    }
+
+    if (!localStorage.getItem("teams")) {
+        localStorage.setItem(
+            "teams",
+            JSON.stringify([])
+        );
+    }
+
+
+    /* =====================================
+       PAGE NAVIGATION
+    ===================================== */
+
+    function showPage(pageId) {
+
+        const pages = document.querySelectorAll(".page");
+
+        pages.forEach(page => {
+            page.classList.remove("active");
+        });
+
+        document.getElementById(pageId)
+            .classList.add("active");
+
+        window.scrollTo(0, 0);
+
+        if (pageId === "tournaments") {
+            loadTournaments();
+        }
+
+        if (pageId === "teams") {
+            loadTeams();
+        }
+
+        if (pageId === "matches") {
+            loadMatches();
+        }
+
+        if (pageId === "leaderboard") {
+            loadLeaderboard();
+        }
+
+        if (pageId === "admin") {
+            loadAdminDashboard();
+        }
+
+        if (pageId === "user") {
+            loadUserDashboard();
+        }
+    }
+
+
+    /* =====================================
+       MESSAGE
+    ===================================== */
+
+    function showMessage(message, color = "#16a34a") {
+
+        const box = document.getElementById("message");
+
+        box.innerText = message;
+        box.style.background = color;
+        box.style.display = "block";
+
+        setTimeout(() => {
+            box.style.display = "none";
+        }, 2500);
+    }
+
+
+    /* =====================================
+       SIGNUP
+    ===================================== */
+
+    function signup(event) {
+
+        event.preventDefault();
+
+        const name =
+            document.getElementById("signupName").value.trim();
+
+        const email =
+            document.getElementById("signupEmail").value.trim();
+
+        const mobile =
+            document.getElementById("signupMobile").value.trim();
+
+        const username =
+            document.getElementById("signupUsername").value.trim();
+
+        const password =
+            document.getElementById("signupPassword").value;
+
+        const confirm =
+            document.getElementById("signupConfirm").value;
+
+
+        if (password !== confirm) {
+
+            showMessage(
+                "Passwords do not match!",
+                "#dc2626"
+            );
+
+            return;
+        }
+
+
+        let users =
+            JSON.parse(localStorage.getItem("users")) || [];
+
+
+        const existing =
+            users.find(user =>
+                user.username === username
+            );
+
+
+        if (existing) {
+
+            showMessage(
+                "Username already exists!",
+                "#dc2626"
+            );
+
+            return;
+        }
+
+
+        const newUser = {
+
+            name,
+            email,
+            mobile,
+            username,
+            password
+
+        };
+
+
+        users.push(newUser);
+
+
+        localStorage.setItem(
+            "users",
+            JSON.stringify(users)
+        );
+
+
+        showMessage(
+            "Registration successful!"
+        );
+
+
+        event.target.reset();
+
+        setTimeout(() => {
+            showPage("login");
+        }, 1200);
+    }
+
+
+    /* =====================================
+       LOGIN
+    ===================================== */
+
+    function login(event) {
+
+        event.preventDefault();
+
+
+        const username =
+            document.getElementById("loginUsername").value.trim();
+
+        const password =
+            document.getElementById("loginPassword").value;
+
+
+        /* ADMIN LOGIN */
+
+        if (
+            username === "admin" &&
+            password === "admin123"
+        ) {
+
+            localStorage.setItem(
+                "currentUser",
+                JSON.stringify({
+                    name: "Administrator",
+                    username: "admin",
+                    role: "admin"
+                })
+            );
+
+            updateNavbar();
+
+            showMessage(
+                "Admin login successful!"
+            );
+
+            setTimeout(() => {
+                showPage("admin");
+            }, 800);
+
+            return;
+        }
+
+
+        /* USER LOGIN */
+
+        const users =
+            JSON.parse(localStorage.getItem("users")) || [];
+
+
+        const user =
+            users.find(
+                u =>
+                    u.username === username &&
+                    u.password === password
+            );
+
+
+        if (!user) {
+
+            showMessage(
+                "Invalid username or password!",
+                "#dc2626"
+            );
+
+            return;
+        }
+
+
+        localStorage.setItem(
+            "currentUser",
+            JSON.stringify({
+                ...user,
+                role: "user"
+            })
+        );
+
+
+        updateNavbar();
+
+        showMessage(
+            "Login successful!"
+        );
+
+
+        setTimeout(() => {
+            showPage("user");
+        }, 800);
+    }
+
+
+    /* =====================================
+       LOGOUT
+    ===================================== */
+
+    function logout() {
+
+        localStorage.removeItem("currentUser");
+
+        updateNavbar();
+
+        showMessage(
+            "Logged out successfully!"
+        );
+
+        showPage("home");
+    }
+
+
+    /* =====================================
+       NAVBAR
+    ===================================== */
+
+    function updateNavbar() {
+
+        const currentUser =
+            JSON.parse(
+                localStorage.getItem("currentUser")
+            );
+
+
+        document.getElementById("logoutBtn")
+            .style.display =
+            currentUser ? "block" : "none";
+    }
+
+
+    /* =====================================
+       LOAD USER DASHBOARD
+    ===================================== */
+
+    function loadUserDashboard() {
+
+        const currentUser =
+            JSON.parse(
+                localStorage.getItem("currentUser")
+            );
+
+
+        if (!currentUser ||
+            currentUser.role !== "user") {
+
+            showPage("login");
+
+            return;
+        }
+
+
+        document.getElementById("welcomeUser")
+            .innerText =
+            "Welcome, " + currentUser.name + "!";
+
+
+        const tournaments =
+            JSON.parse(
+                localStorage.getItem("tournaments")
+            ) || [];
+
+
+        const teams =
+            JSON.parse(
+                localStorage.getItem("teams")
+            ) || [];
+
+
+        document.getElementById(
+            "userTournamentCount"
+        ).innerText = tournaments.length;
+
+
+        document.getElementById(
+            "userTeamCount"
+        ).innerText = teams.length;
+    }
+
+
+    /* =====================================
+       TOURNAMENTS
+    ===================================== */
+
+    function loadTournaments() {
+
+        const tournaments =
+            JSON.parse(
+                localStorage.getItem("tournaments")
+            ) || [];
+
+
+        const container =
+            document.getElementById(
+                "tournamentCards"
+            );
+
+
+        container.innerHTML = "";
+
+
+        tournaments.forEach(tournament => {
+
+            container.innerHTML += `
+
+                <div class="card">
+
+                    <h3>🏆 ${tournament.name}</h3>
+
+                    <p>
+                        <b>Game:</b>
+                        ${tournament.game}
+                    </p>
+
+                    <p>
+                        <b>Date:</b>
+                        ${tournament.date}
+                    </p>
+
+                    <p>
+                        <b>Mode:</b>
+                        ${tournament.mode}
+                    </p>
+
+                    <button
+                        class="btn success"
+                        onclick="registerTournament('${tournament.name}')">
+
+                        Register
+
+                    </button>
+
+                </div>
+
+            `;
+        });
+    }
+
+
+    function registerTournament(name) {
+
+        const currentUser =
+            JSON.parse(
+                localStorage.getItem("currentUser")
+            );
+
+
+        if (!currentUser) {
+
+            showMessage(
+                "Please login first!",
+                "#dc2626"
+            );
+
+            showPage("login");
+
+            return;
+        }
+
+
+        let registrations =
+            JSON.parse(
+                localStorage.getItem(
+                    "registrations"
+                )
+            ) || [];
+
+
+        registrations.push({
+
+            username: currentUser.username,
+            tournament: name
+
+        });
+
+
+        localStorage.setItem(
+            "registrations",
+            JSON.stringify(registrations)
+        );
+
+
+        showMessage(
+            "Tournament registration successful!"
+        );
+    }
+
+
+    /* =====================================
+       ADMIN - ADD TOURNAMENT
+    ===================================== */
+
+    function addTournament() {
+
+        const name =
+            document.getElementById(
+                "adminTournamentName"
+            ).value.trim();
+
+
+        const game =
+            document.getElementById(
+                "adminGame"
+            ).value.trim();
+
+
+        const date =
+            document.getElementById(
+                "adminDate"
+            ).value;
+
+
+        if (!name || !game || !date) {
+
+            showMessage(
+                "Please fill all tournament fields!",
+                "#dc2626"
+            );
+
+            return;
+        }
+
+
+        let tournaments =
+            JSON.parse(
+                localStorage.getItem(
+                    "tournaments"
+                )
+            ) || [];
+
+
+        tournaments.push({
+
+            id: Date.now(),
+            name,
+            game,
+            date,
+            mode: "Online"
+
+        });
+
+
+        localStorage.setItem(
+            "tournaments",
+            JSON.stringify(tournaments)
+        );
+
+
+        document.getElementById(
+            "adminTournamentName"
+        ).value = "";
+
+
+        document.getElementById(
+            "adminGame"
+        ).value = "";
+
+
+        document.getElementById(
+            "adminDate"
+        ).value = "";
+
+
+        showMessage(
+            "Tournament added successfully!"
+        );
+
+
+        loadAdminDashboard();
+    }
+
+
+    /* =====================================
+       ADMIN DASHBOARD
+    ===================================== */
+
+    function loadAdminDashboard() {
+
+        const users =
+            JSON.parse(
+                localStorage.getItem("users")
+            ) || [];
+
+
+        const tournaments =
+            JSON.parse(
+                localStorage.getItem("tournaments")
+            ) || [];
+
+
+        const teams =
+            JSON.parse(
+                localStorage.getItem("teams")
+            ) || [];
+
+
+        const matches =
+            JSON.parse(
+                localStorage.getItem("matches")
+            ) || [];
+
+
+        document.getElementById(
+            "adminUsers"
+        ).innerText = users.length;
+
+
+        document.getElementById(
+            "adminTournaments"
+        ).innerText = tournaments.length;
+
+
+        document.getElementById(
+            "adminTeams"
+        ).innerText = teams.length;
+
+
+        document.getElementById(
+            "adminMatches"
+        ).innerText = matches.length;
+
+
+        const table =
+            document.getElementById(
+                "adminUserTable"
+            );
+
+
+        table.innerHTML = "";
+
+
+        users.forEach(user => {
+
+            table.innerHTML += `
+
+                <tr>
+
+                    <td>${user.name}</td>
+
+                    <td>${user.email}</td>
+
+                    <td>${user.username}</td>
+
+                </tr>
+
+            `;
+        });
+    }
+
+
+    /* =====================================
+       TEAM MANAGEMENT
+    ===================================== */
+
+    function createTeam() {
+
+        const currentUser =
+            JSON.parse(
+                localStorage.getItem("currentUser")
+            );
+
+
+        if (!currentUser) {
+
+            showMessage(
+                "Please login first!",
+                "#dc2626"
+            );
+
+            showPage("login");
+
+            return;
+        }
+
+
+        const teamName =
+            document.getElementById(
+                "teamName"
+            ).value.trim();
+
+
+        const game =
+            document.getElementById(
+                "teamGame"
+            ).value;
+
+
+        if (!teamName || !game) {
+
+            showMessage(
+                "Please enter team details!",
+                "#dc2626"
+            );
+
+            return;
+        }
+
+
+        let teams =
+            JSON.parse(
+                localStorage.getItem("teams")
+            ) || [];
+
+
+        teams.push({
+
+            teamName,
+            game,
+            captain: currentUser.name,
+            members: [
+                currentUser.name
+            ]
+
+        });
+
+
+        localStorage.setItem(
+            "teams",
+            JSON.stringify(teams)
+        );
+
+
+        document.getElementById(
+            "teamName"
+        ).value = "";
+
+
+        showMessage(
+            "Team created successfully!"
+        );
+
+
+        loadTeams();
+    }
+
+
+    function loadTeams() {
+
+        const teams =
+            JSON.parse(
+                localStorage.getItem("teams")
+            ) || [];
+
+
+        const container =
+            document.getElementById(
+                "teamCards"
+            );
+
+
+        container.innerHTML = "";
+
+
+        if (teams.length === 0) {
+
+            container.innerHTML = `
+                <div class="card">
+                    <h3>No teams created yet.</h3>
+                    <p>Create your first team.</p>
+                </div>
+            `;
+
+            return;
+        }
+
+
+        teams.forEach(team => {
+
+            container.innerHTML += `
+
+                <div class="card">
+
+                    <h3>👥 ${team.teamName}</h3>
+
+                    <p>
+                        <b>Game:</b>
+                        ${team.game}
+                    </p>
+
+                    <p>
+                        <b>Captain:</b>
+                        ${team.captain}
+                    </p>
+
+                    <p>
+                        <b>Members:</b>
+                        ${team.members.join(", ")}
+                    </p>
+
+                </div>
+
+            `;
+        });
+    }
+
+
+    /* =====================================
+       MATCHES
+    ===================================== */
+
+    function loadMatches() {
+
+        const matches =
+            JSON.parse(
+                localStorage.getItem("matches")
+            ) || [];
+
+
+        const table =
+            document.getElementById(
+                "matchTable"
+            );
+
+
+        table.innerHTML = "";
+
+
+        matches.forEach(match => {
+
+            let statusClass = "";
+
+            if (match.status === "Live") {
+                statusClass = "warning";
+            }
+
+            if (match.status === "Completed") {
+                statusClass = "success";
+            }
+
+
+            table.innerHTML += `
+
+                <tr>
+
+                    <td>${match.game}</td>
+
+                    <td>${match.teamA}</td>
+
+                    <td>${match.teamB}</td>
+
+                    <td>${match.date}</td>
+
+                    <td>
+
+                        <span
+                            class="btn ${statusClass}"
+                            style="padding:6px 10px;">
+
+                            ${match.status}
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+            `;
+        });
+    }
+
+
+    /* =====================================
+       LEADERBOARD
+    ===================================== */
+
+    function loadLeaderboard() {
+
+        const leaderboard =
+            JSON.parse(
+                localStorage.getItem(
+                    "leaderboard"
+                )
+            ) || [];
+
+
+        leaderboard.sort(
+            (a, b) => b.points - a.points
+        );
+
+
+        const table =
+            document.getElementById(
+                "leaderboardTable"
+            );
+
+
+        table.innerHTML = "";
+
+
+        leaderboard.forEach(
+            (team, index) => {
+
+                table.innerHTML += `
+
+                    <tr>
+
+                        <td>
+                            <b>#${index + 1}</b>
+                        </td>
+
+                        <td>
+                            ${team.team}
+                        </td>
+
+                        <td>
+                            ${team.captain}
+                        </td>
+
+                        <td>
+                            ${team.wins}
+                        </td>
+
+                        <td>
+                            <b>${team.points}</b>
+                        </td>
+
+                    </tr>
+
+                `;
+            }
+        );
+    }
+
+
+    /* =====================================
+       INITIAL LOAD
+    ===================================== */
+
+    updateNavbar();
+    loadTournaments();
+    loadMatches();
+    loadLeaderboard();
+
+</script>
+
+</body>
+</html>
