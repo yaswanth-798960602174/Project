@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gaming Tournament Portal</title>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar">
+
+        <div class="logo">
+            🎮 Gaming Tournament Portal
+        </div>
+
+        <div class="nav-links">
+            <a onclick="showPage('home')">Home</a>
+            <a onclick="showPage('tournaments')">Tournaments</a>
+            <a onclick="showPage('leaderboard')">Leaderboard</a>
+
+            <a id="loginNav" onclick="showPage('login')">Login</a>
+            <a id="signupNav" onclick="showPage('signup')">Signup</a>
+
+            <a id="logoutNav" onclick="logout()" style="display:none;">
+                Logout
+            </a>
+        </div>
+
+    </nav>
+
+
+    <!-- ================= MESSAGE ================= -->
+    <div id="message"></div>
+
+
+    <!-- ================= HOME PAGE ================= -->
+    <section id="home" class="page active">
+
+        <div class="hero">
+
+            <h1>🎮 Gaming Tournament Portal</h1>
+
+            <p>
+                Join online gaming tournaments, create teams,
+                compete with players and track your rankings.
+            </p>
+
+            <div class="hero-buttons">
+                <button onclick="showPage('tournaments')">
+                    Explore Tournaments
+                </button>
+
+                <button onclick="showPage('signup')">
+                    Join Now
+                </button>
+            </div>
+
+        </div>
+
+
+        <div class="container">
+
+            <h2 class="section-title">Our Features</h2>
+
+            <div class="cards">
+
+                <div class="card">
+                    <h3>🏆 Tournament Registration</h3>
+                    <p>
+                        Players can view and register for available
+                        gaming tournaments.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h3>👥 Team Management</h3>
+                    <p>
+                        Users can create gaming teams and manage
+                        their team information.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h3>📅 Match Scheduling</h3>
+                    <p>
+                        Players can view upcoming and live matches.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h3>🏅 Leaderboard</h3>
+                    <p>
+                        View team rankings, wins and points.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h3>🔔 Live Updates</h3>
+                    <p>
+                        Users can check current match status.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h3>💰 Prize Management</h3>
+                    <p>
+                        Tournament information can include prize
+                        details for future expansion.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= SIGNUP PAGE ================= -->
+    <section id="signup" class="page">
+
+        <div class="form-container">
+
+            <h2>Create Account</h2>
+
+            <form onsubmit="signup(event)">
+
+                <label>Full Name</label>
+                <input
+                    type="text"
+                    id="signupName"
+                    placeholder="Enter full name"
+                    required
+                >
+
+                <label>Email</label>
+                <input
+                    type="email"
+                    id="signupEmail"
+                    placeholder="Enter email"
+                    required
+                >
+
+                <label>Mobile Number</label>
+                <input
+                    type="tel"
+                    id="signupMobile"
+                    placeholder="Enter mobile number"
+                    required
+                >
+
+                <label>Username</label>
+                <input
+                    type="text"
+                    id="signupUsername"
+                    placeholder="Create username"
+                    required
+                >
+
+                <label>Password</label>
+                <input
+                    type="password"
+                    id="signupPassword"
+                    placeholder="Create password"
+                    required
+                >
+
+                <label>Confirm Password</label>
+                <input
+                    type="password"
+                    id="signupConfirmPassword"
+                    placeholder="Confirm password"
+                    required
+                >
+
+                <button type="submit">
+                    Create Account
+                </button>
+
+            </form>
+
+            <p class="form-link">
+                Already have an account?
+                <a onclick="showPage('login')">Login</a>
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= LOGIN PAGE ================= -->
+    <section id="login" class="page">
+
+        <div class="form-container">
+
+            <h2>Login</h2>
+
+            <form onsubmit="login(event)">
+
+                <label>Username</label>
+
+                <input
+                    type="text"
+                    id="loginUsername"
+                    placeholder="Enter username"
+                    required
+                >
+
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="loginPassword"
+                    placeholder="Enter password"
+                    required
+                >
+
+                <button type="submit">
+                    Login
+                </button>
+
+            </form>
+
+            <p class="login-info">
+                Admin Login:
+                <b>admin</b> /
+                <b>admin123</b>
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= USER DASHBOARD ================= -->
+    <section id="userDashboard" class="page">
+
+        <div class="container">
+
+            <h2>User Dashboard</h2>
+
+            <h3 id="welcomeUser"></h3>
+
+            <div class="dashboard">
+
+                <div class="dashboard-card">
+                    <h3>🏆 Tournaments</h3>
+                    <p id="tournamentCount">0</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>👥 My Teams</h3>
+                    <p id="teamCount">0</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>📅 Upcoming Matches</h3>
+                    <p id="matchCount">3</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>🏅 Current Ranking</h3>
+                    <p>1</p>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-buttons">
+
+                <button onclick="showPage('tournaments')">
+                    View Tournaments
+                </button>
+
+                <button onclick="showPage('teams')">
+                    Manage Teams
+                </button>
+
+                <button onclick="showPage('matches')">
+                    View Matches
+                </button>
+
+                <button onclick="showPage('leaderboard')">
+                    View Leaderboard
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= ADMIN DASHBOARD ================= -->
+    <section id="adminDashboard" class="page">
+
+        <div class="container">
+
+            <h2>⚙️ Admin Dashboard</h2>
+
+            <div class="dashboard">
+
+                <div class="dashboard-card">
+                    <h3>👤 Users</h3>
+                    <p id="adminUserCount">0</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>🏆 Tournaments</h3>
+                    <p id="adminTournamentCount">0</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>👥 Teams</h3>
+                    <p id="adminTeamCount">0</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>📅 Matches</h3>
+                    <p>3</p>
+                </div>
+
+            </div>
+
+
+            <!-- Add Tournament -->
+
+            <div class="admin-box">
+
+                <h3>Add New Tournament</h3>
+
+                <form onsubmit="addTournament(event)">
+
+                    <label>Tournament Name</label>
+
+                    <input
+                        type="text"
+                        id="tournamentName"
+                        placeholder="Enter tournament name"
+                        required
+                    >
+
+                    <label>Game</label>
+
+                    <select id="tournamentGame" required>
+
+                        <option value="">
+                            Select Game
+                        </option>
+
+                        <option value="BGMI">
+                            BGMI
+                        </option>
+
+                        <option value="Valorant">
+                            Valorant
+                        </option>
+
+                        <option value="Free Fire">
+                            Free Fire
+                        </option>
+
+                        <option value="Call of Duty">
+                            Call of Duty
+                        </option>
+
+                    </select>
+
+
+                    <label>Date</label>
+
+                    <input
+                        type="date"
+                        id="tournamentDate"
+                        required
+                    >
+
+                    <button type="submit">
+                        Add Tournament
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- Registered Users -->
+
+            <div class="admin-box">
+
+                <h3>Registered Users</h3>
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Username</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="usersTable">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TOURNAMENTS ================= -->
+    <section id="tournaments" class="page">
+
+        <div class="container">
+
+            <h2>🏆 Available Tournaments</h2>
+
+            <div id="tournamentList" class="cards">
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TEAMS ================= -->
+    <section id="teams" class="page">
+
+        <div class="container">
+
+            <h2>👥 Team Management</h2>
+
+            <div class="form-container">
+
+                <h3>Create New Team</h3>
+
+                <form onsubmit="createTeam(event)">
+
+                    <label>Team Name</label>
+
+                    <input
+                        type="text"
+                        id="teamName"
+                        placeholder="Enter team name"
+                        required
+                    >
+
+                    <label>Game</label>
+
+                    <select id="teamGame" required>
+
+                        <option value="">
+                            Select Game
+                        </option>
+
+                        <option value="BGMI">
+                            BGMI
+                        </option>
+
+                        <option value="Valorant">
+                            Valorant
+                        </option>
+
+                        <option value="Free Fire">
+                            Free Fire
+                        </option>
+
+                        <option value="Call of Duty">
+                            Call of Duty
+                        </option>
+
+                    </select>
+
+                    <button type="submit">
+                        Create Team
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <h3 class="sub-title">
+                My Teams
+            </h3>
+
+            <div id="teamList" class="cards">
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= MATCHES ================= -->
+    <section id="matches" class="page">
+
+        <div class="container">
+
+            <h2>📅 Match Schedule</h2>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Game</th>
+                            <th>Team 1</th>
+                            <th>Team 2</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="matchTable">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= LEADERBOARD ================= -->
+    <section id="leaderboard" class="page">
+
+        <div class="container">
+
+            <h2>🏅 Leaderboard</h2>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Rank</th>
+                            <th>Team</th>
+                            <th>Captain</th>
+                            <th>Wins</th>
+                            <th>Points</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="leaderboardTable">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- External JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+</html>
