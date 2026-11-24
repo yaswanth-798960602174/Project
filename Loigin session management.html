@@ -1,0 +1,333 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Session Management</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        /* Login Page */
+        #loginPage {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0f172a, #2563eb);
+        }
+
+        .login-box {
+            background: white;
+            padding: 35px;
+            width: 350px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px #0003;
+            text-align: center;
+        }
+
+        .login-box h2 {
+            color: #2563eb;
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+        }
+
+        button {
+            padding: 11px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: #2563eb;
+            color: white;
+        }
+
+        /* Dashboard */
+        #dashboard {
+            display: none;
+        }
+
+        .navbar {
+            background: #0f172a;
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #60a5fa;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            background: #2563eb;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            margin-bottom: 8px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #2563eb;
+            box-shadow: 0 3px 12px #0000000d;
+        }
+
+        .card h3 {
+            color: #64748b;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            color: #2563eb;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .activity {
+            background: white;
+            padding: 25px;
+            margin-top: 25px;
+            border-radius: 10px;
+        }
+
+        .activity h2 {
+            margin-bottom: 15px;
+        }
+
+        .activity p {
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        @media (max-width: 700px) {
+            .navbar {
+                padding: 15px;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+
+            .content {
+                padding: 18px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Login Section -->
+    <section id="loginPage">
+        <div class="login-box">
+            <h2>User Login</h2>
+
+            <form onsubmit="loginUser(event)">
+                <input type="text" id="username"
+                       placeholder="Enter username" required>
+
+                <input type="password" id="password"
+                       placeholder="Enter password" required>
+
+                <button type="submit" class="login-btn">
+                    Login
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- User Dashboard -->
+    <section id="dashboard">
+
+        <nav class="navbar">
+            <div class="logo">MyDashboard</div>
+
+            <!-- Username displayed at top right -->
+            <div class="user-info">
+                <div class="avatar" id="avatar">U</div>
+                <span id="displayUsername">User</span>
+
+                <button class="logout-btn" onclick="logoutUser()">
+                    Logout
+                </button>
+            </div>
+        </nav>
+
+        <main class="content">
+            <div class="welcome">
+                <h1>Welcome, <span id="welcomeUsername"></span>!</h1>
+                <p>You are successfully logged in to your dashboard.</p>
+            </div>
+
+            <div class="cards">
+                <div class="card">
+                    <h3>Total Projects</h3>
+                    <p>08</p>
+                </div>
+
+                <div class="card">
+                    <h3>Tasks Completed</h3>
+                    <p>24</p>
+                </div>
+
+                <div class="card">
+                    <h3>Account Status</h3>
+                    <p style="color: green;">Active</p>
+                </div>
+            </div>
+
+            <div class="activity">
+                <h2>Dashboard Information</h2>
+                <p>✓ Login session is active.</p>
+                <p>✓ Username is stored in local storage.</p>
+                <p>✓ Session status is managed using session storage.</p>
+                <p>✓ Click Logout to end your session.</p>
+            </div>
+        </main>
+    </section>
+
+    <script>
+        // Login Function
+        function loginUser(event) {
+            event.preventDefault();
+
+            const username =
+                document.getElementById("username").value.trim();
+
+            const password =
+                document.getElementById("password").value;
+
+            if (username === "" || password === "") {
+                alert("Please enter username and password.");
+                return;
+            }
+
+            // Store user information in local storage
+            localStorage.setItem("username", username);
+
+            // Create login session
+            sessionStorage.setItem("loggedIn", "true");
+
+            // Display dashboard after login
+            showDashboard();
+        }
+
+        // Check Session and Display Dashboard
+        function showDashboard() {
+            const loggedIn =
+                sessionStorage.getItem("loggedIn") === "true";
+
+            if (loggedIn) {
+                const username = localStorage.getItem("username");
+
+                if (!username) {
+                    logoutUser();
+                    return;
+                }
+
+                document.getElementById("loginPage").style.display = "none";
+                document.getElementById("dashboard").style.display = "block";
+
+                document.getElementById("displayUsername").textContent =
+                    username;
+
+                document.getElementById("welcomeUsername").textContent =
+                    username;
+
+                document.getElementById("avatar").textContent =
+                    username.charAt(0).toUpperCase();
+
+            } else {
+                document.getElementById("loginPage").style.display = "flex";
+                document.getElementById("dashboard").style.display = "none";
+            }
+        }
+
+        // Logout Function
+        function logoutUser() {
+            // Clear login session
+            sessionStorage.removeItem("loggedIn");
+
+            // Return to login page
+            document.getElementById("dashboard").style.display = "none";
+            document.getElementById("loginPage").style.display = "flex";
+
+            // Clear input fields
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
+
+            alert("Logged out successfully!");
+        }
+
+        // Check login status when page loads
+        window.addEventListener("load", showDashboard);
+
+        // Recheck session when navigating back to the page
+        window.addEventListener("pageshow", showDashboard);
+    </script>
+
+</body>
+</html>
+```
